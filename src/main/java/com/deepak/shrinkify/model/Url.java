@@ -21,7 +21,7 @@ public class Url {
     @Column(name = "original_url", nullable = false, columnDefinition = "text")
     private String originalUrl;
 
-    @Column(name = "short_code", nullable = false, unique = true, length = 10)
+    @Column(name = "short_code", unique = true, length = 10)
     private String shortCode;
 
     @Column(name = "click_count", nullable = false)
