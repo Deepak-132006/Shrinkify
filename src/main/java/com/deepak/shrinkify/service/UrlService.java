@@ -2,8 +2,9 @@ package com.deepak.shrinkify.service;
 
 import com.deepak.shrinkify.dto.UrlRequest;
 import com.deepak.shrinkify.model.Url;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface UrlService {
     String shorten(UrlRequest request, String baseUrl);
-    Url getByShortCode(String shortCode);
+    Url getByShortCode(String shortCode, HttpServletRequest request);
 }
