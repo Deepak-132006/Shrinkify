@@ -4,8 +4,10 @@ import com.deepak.shrinkify.dto.UrlRequest;
 import com.deepak.shrinkify.dto.UrlResponse;
 import com.deepak.shrinkify.model.Url;
 import com.deepak.shrinkify.service.UrlService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +35,9 @@ public class UrlController {
 
 
     @GetMapping("/r/{shortCode}")
-    public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
-        Url url = urlService.getByShortCode(shortCode);
-        return ResponseEntity.status(302)
+    public ResponseEntity<Void> redirect(@PathVariable String shortCode, HttpServletRequest request) {
+        Url url = urlService.getByShortCode(shortCode, request);
+        return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(url.getOriginalUrl()))
                 .build();
     }

@@ -2,25 +2,28 @@ package com.deepak.shrinkify.service;
 
 import com.deepak.shrinkify.dto.UrlRequest;
 import com.deepak.shrinkify.exception.NotFoundException;
+import com.deepak.shrinkify.model.ClickLog;
 import com.deepak.shrinkify.model.Url;
+import com.deepak.shrinkify.repository.ClickLogRepository;
 import com.deepak.shrinkify.repository.UrlRepository;
 import com.deepak.shrinkify.util.Base62Encoder;
+import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
-import java.security.SecureRandom;
 
 @Service
 public class UrlServiceImpl implements UrlService {
 
     private final UrlRepository urlRepository;
-    private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int CODE_LENGTH = 6;
-    private final SecureRandom random = new SecureRandom();
+    private final ClickLogRepository clickLogRepository;
 
-    public UrlServiceImpl(UrlRepository urlRepository) {
+    public UrlServiceImpl(UrlRepository urlRepository, ClickLogRepository clickLogRepository) {
         this.urlRepository = urlRepository;
+        this.clickLogRepository = clickLogRepository;
     }
 
     private boolean isValidUrl(String url) {
@@ -36,7 +39,7 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public String shorten(UrlRequest request, String baseUrl) {
+    public String shorten(@NonNull UrlRequest request, String baseUrl) {
         String originalUrl = request.getOriginalUrl();
         if (!isValidUrl(originalUrl)) {
             throw new IllegalArgumentException("Invalid URL: must start with http:// or https://");
@@ -63,22 +66,20 @@ public class UrlServiceImpl implements UrlService {
         return baseUrl.endsWith("/") ? baseUrl + shortCode : baseUrl + "/" + shortCode;
     }
 
-
     @Override
     @Transactional
-    public Url getByShortCode(String shortCode) {
+    public Url getByShortCode(String shortCode, HttpServletRequest request) {
         long id = Base62Encoder.decode(shortCode);
         Url url = urlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Short URL not found"));
         url.setClickCount(url.getClickCount() + 1);
+
+        ClickLog log = new ClickLog();
+        log.setUrl(url);
+        log.setIpAddress(request.getRemoteAddr());
+        log.setUserAgent(request.getHeader("User-Agent"));
+        clickLogRepository.save(log);
+
         return url;
     }
-
-//    private String generateUniqueCode() {
-//        StringBuilder sb = new StringBuilder(CODE_LENGTH);
-//        for (int i = 0; i < CODE_LENGTH; i++) {
-//            sb.append(ALPHABET.charAt(random.nextInt(ALPHABET.length())));
-//        }
-//        return sb.toString();
-//    }
 }
