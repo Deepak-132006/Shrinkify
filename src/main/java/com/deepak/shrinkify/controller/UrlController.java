@@ -2,6 +2,7 @@ package com.deepak.shrinkify.controller;
 
 import com.deepak.shrinkify.dto.UrlRequest;
 import com.deepak.shrinkify.dto.UrlResponse;
+import com.deepak.shrinkify.dto.UrlStatsResponse;
 import com.deepak.shrinkify.model.Url;
 import com.deepak.shrinkify.service.UrlService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,5 +41,10 @@ public class UrlController {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(url.getOriginalUrl()))
                 .build();
+    }
+    @GetMapping("/stats/{shortCode}")
+    public ResponseEntity<UrlStatsResponse> getStats(@PathVariable String shortCode){
+        UrlStatsResponse stats = urlService.getStatsByShortCode(shortCode);
+        return ResponseEntity.ok(stats);
     }
 }

@@ -1,6 +1,8 @@
 package com.deepak.shrinkify.service;
 
+import com.deepak.shrinkify.dto.ClickLogResponse;
 import com.deepak.shrinkify.dto.UrlRequest;
+import com.deepak.shrinkify.dto.UrlStatsResponse;
 import com.deepak.shrinkify.exception.NotFoundException;
 import com.deepak.shrinkify.model.ClickLog;
 import com.deepak.shrinkify.model.Url;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
+import java.util.List;
 
 @Service
 public class UrlServiceImpl implements UrlService {
@@ -69,7 +72,12 @@ public class UrlServiceImpl implements UrlService {
     @Override
     @Transactional
     public Url getByShortCode(String shortCode, HttpServletRequest request) {
-        long id = Base62Encoder.decode(shortCode);
+        long id;
+        try {
+            id = Base62Encoder.decode(shortCode);
+        } catch (Exception e) {
+            throw new NotFoundException("Invalid short URL");
+        }
         Url url = urlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Short URL not found"));
         url.setClickCount(url.getClickCount() + 1);
@@ -81,5 +89,29 @@ public class UrlServiceImpl implements UrlService {
         clickLogRepository.save(log);
 
         return url;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UrlStatsResponse getStatsByShortCode(String shortCode){
+        long id = Base62Encoder.decode(shortCode);
+        Url url = urlRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Short URL Not Found"));
+        List<ClickLog> logs = clickLogRepository.findRecentByUrl(url);
+
+        List<ClickLogResponse> recentClicks = logs.stream()
+                .map(log -> new ClickLogResponse(
+                        log.getClickedAt(),
+                        log.getIpAddress(),
+                        log.getUserAgent()
+                ))
+                .toList();
+        return new UrlStatsResponse(
+                url.getOriginalUrl(),
+                url.getShortCode(),
+                url.getClickCount(),
+                url.getCreatedAt(),
+                recentClicks
+        );
     }
 }
