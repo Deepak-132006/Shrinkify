@@ -28,21 +28,21 @@ public class UrlController {
     }
 
 
-    @PostMapping("/shorten")
+    @PostMapping("shorten")
     public ResponseEntity<UrlResponse> shorten(@Valid @RequestBody UrlRequest request) {
-        String shortUrl = urlService.shorten(request, baseUrl + "/api/v1/r");
+        String shortUrl = urlService.shorten(request, baseUrl);
         return ResponseEntity.ok(new UrlResponse(shortUrl));
     }
 
 
-    @GetMapping("/r/{shortCode}")
+    @GetMapping("{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode, HttpServletRequest request) {
         Url url = urlService.getByShortCode(shortCode, request);
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(url.getOriginalUrl()))
                 .build();
     }
-    @GetMapping("/stats/{shortCode}")
+    @GetMapping("stats/{shortCode}")
     public ResponseEntity<UrlStatsResponse> getStats(@PathVariable String shortCode){
         UrlStatsResponse stats = urlService.getStatsByShortCode(shortCode);
         return ResponseEntity.ok(stats);
