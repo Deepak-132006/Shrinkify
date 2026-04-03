@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class ShrinkifyApplication {
 	public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load(); // loads .env
+        Dotenv dotenv = Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
         System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
         System.setProperty("DB_PORT", dotenv.get("DB_PORT"));
         System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
