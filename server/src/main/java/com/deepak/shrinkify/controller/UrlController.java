@@ -20,7 +20,7 @@ public class UrlController {
 
     private final UrlService urlService;
 
-    @Value("${app.base-url:https://shrinkify-app.onrender.com/}")
+    @Value("${app.base-url:https://shrinkify-app.onrender.com}")
     private String baseUrl;
 
     public UrlController(UrlService urlService) {
