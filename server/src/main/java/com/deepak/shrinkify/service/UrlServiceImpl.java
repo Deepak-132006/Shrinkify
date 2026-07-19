@@ -11,7 +11,6 @@ import com.deepak.shrinkify.repository.UrlRepository;
 import com.deepak.shrinkify.util.Base62Encoder;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jspecify.annotations.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
