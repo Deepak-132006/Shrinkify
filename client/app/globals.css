@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink font-body antialiased;
+  }
+  ::selection {
+    @apply bg-tan/40 text-ink;
+  }
+  :focus-visible {
+    outline: 2px solid #252323;
+    outline-offset: 3px;
+  }
+}
+
+/* Perforated tear edge along the top of each claim ticket. Pure CSS radial
+   gradient "punch holes" — no images, no extra colors beyond the palette. */
+.ticket-perforation {
+  background-image: radial-gradient(circle at center, #f5f1ed 3.5px, transparent 3.6px);
+  background-size: 16px 100%;
+  background-position: 8px center;
+  height: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
