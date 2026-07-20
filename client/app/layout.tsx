@@ -19,7 +19,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shrinkify — Paste a mile, get an inch.",
+  title: "Shrinkify - URL Shortner",
   description: "A no-nonsense URL shortener. Paste a long link, get a claim ticket back.",
 };
 
