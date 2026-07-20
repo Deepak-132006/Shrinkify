@@ -9,7 +9,6 @@ type Phase = "idle" | "pressing" | "error";
 
 export default function PressForm({ onIssued }: { onIssued: (t: Ticket) => void }) {
   const [url, setUrl] = useState("");
-  const [customCode, setCustomCode] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
   const [error, setError] = useState<string | null>(null);
   const [nextId, setNextId] = useState(1);
@@ -23,8 +22,7 @@ export default function PressForm({ onIssued }: { onIssued: (t: Ticket) => void 
     const started = Date.now();
     try {
       const res = await shortenUrl({
-        originalUrl: url.trim(),
-        customCode: customCode.trim() || undefined,
+        originalUrl: url.trim()
       });
 
       // Let the press animation land (min ~520ms) before revealing the
@@ -41,7 +39,6 @@ export default function PressForm({ onIssued }: { onIssued: (t: Ticket) => void 
       });
       setNextId((n) => n + 1);
       setUrl("");
-      setCustomCode("");
       setPhase("idle");
     } catch (err) {
       setPhase("error");
@@ -85,15 +82,7 @@ export default function PressForm({ onIssued }: { onIssued: (t: Ticket) => void 
             className="min-w-0 flex-1 rounded-lg bg-cream px-4 py-3.5 font-mono text-sm text-ink placeholder:text-slate/70 focus:outline-none disabled:opacity-50 sm:px-4"
           />
 
-          <input
-            id="customCode"
-            type="text"
-            disabled={phase === "pressing"}
-            placeholder="custom code (optional)"
-            value={customCode}
-            onChange={(e) => setCustomCode(e.target.value)}
-            className="w-full rounded-lg bg-cream px-4 py-3.5 font-mono text-sm text-ink placeholder:text-slate/70 focus:outline-none disabled:opacity-50 sm:w-48"
-          />
+
 
           <button
             type="submit"
