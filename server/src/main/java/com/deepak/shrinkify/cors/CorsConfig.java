@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                                 "http://localhost:3000",
-                                "https://your-deployed-frontend-domain.com" // add once you deploy the frontend
+                                "https://shrinkify-seven.vercel.app/" // add once you deploy the frontend
                         )
                         .allowedMethods("GET", "POST", "OPTIONS")
                         .allowedHeaders("*");
