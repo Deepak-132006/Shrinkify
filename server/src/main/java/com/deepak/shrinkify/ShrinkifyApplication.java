@@ -12,11 +12,9 @@ public class ShrinkifyApplication {
         Dotenv dotenv = Dotenv.configure()
                 .ignoreIfMissing()
                 .load();
-        System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
-        System.setProperty("DB_PORT", dotenv.get("DB_PORT"));
-        System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
         System.setProperty("DB_USER", dotenv.get("DB_USER"));
         System.setProperty("DB_PASS", dotenv.get("DB_PASS"));
+        System.setProperty("JDBC_DATABASE_URL", dotenv.get("JDBC_DATABASE_URL"));
 
         SpringApplication.run(ShrinkifyApplication.class, args);
 	}
