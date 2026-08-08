@@ -6,8 +6,6 @@ The application also provides **click/visit analytics**, allowing users to monit
 
 #### Project Link: [View Project](https://shrinkify-seven.vercel.app/)
 
-#### Source Code: [View on GitHub](https://github.com/Deepak-132006/Shrinkify)
-
 ---
 
 ## 📸 Screenshots
