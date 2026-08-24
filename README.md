@@ -7,7 +7,7 @@ The application also provides **click/visit analytics**, allowing users to monit
 #### Project Link: [View Project](https://shrinkify-seven.vercel.app/)
 
 ---
-
+\
 ## 📸 Screenshots
 
 ![Shrinkify Dashboard](https://github.com/Deepak-132006/Shrinkify/blob/main/output/dashboard.png?raw=true)
