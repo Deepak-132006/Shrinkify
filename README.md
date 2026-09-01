@@ -5,7 +5,6 @@ Shrinkify is a full-stack URL shortening application built using **Java, Spring 
 The application also provides **click/visit analytics**, allowing users to monitor how many times their shortened URLs have been accessed.
 
 #### Project Link: [View Project](https://shrinkify-seven.vercel.app/)
-
 ---
 \
 ## 📸 Screenshots
